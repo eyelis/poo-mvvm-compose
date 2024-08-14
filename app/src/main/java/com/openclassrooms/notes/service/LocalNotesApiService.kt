@@ -2,20 +2,25 @@ package com.openclassrooms.notes.service
 
 import com.openclassrooms.notes.model.Note
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 /**
  * Implementation of the [NotesApiService] interface that stores note in local
  */
-class LocalNotesApiService(private val notes: MutableList<Note>) : NotesApiService {
+class LocalNotesApiService(private val notes: List<Note>) : NotesApiService {
+
+    private val noteFlow = MutableStateFlow(notes)
 
     override suspend fun addNote(note: Note) {
-        notes.add(note)
+        noteFlow.update { actual ->
+            val list = actual.toMutableList()
+            list.add(note)
+            list
+        }
     }
 
-    override fun getAllNotes(): Flow<List<Note>> = flow {
-        emit(notes)
-    }
+    override fun getAllNotes(): Flow<List<Note>> = noteFlow
 
     companion object {
         val notes = mutableListOf(

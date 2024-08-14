@@ -5,6 +5,7 @@ import com.openclassrooms.notes.dao.NoteDao
 import com.openclassrooms.notes.dao.NoteDatabase
 import com.openclassrooms.notes.repository.NotesRepository
 import com.openclassrooms.notes.repository.NotesRepositoryDBImpl
+import com.openclassrooms.notes.repository.NotesRepositoryImpl
 import com.openclassrooms.notes.service.LocalNotesApiService
 import com.openclassrooms.notes.service.NotesApiService
 import org.koin.android.ext.koin.androidApplication
@@ -17,7 +18,7 @@ val appModule = module {
         LocalNotesApiService(LocalNotesApiService.notes)
     }
     single<NotesRepository> {
-        NotesRepositoryDBImpl(get())
+        NotesRepositoryImpl(get())
     }
 
     viewModel {
